@@ -3,7 +3,8 @@ WORKDIR /workspace
 
 RUN apt-get update && apt-get install -y maven
 
-COPY . .
+COPY pom.xml .
+COPY src ./src
 
 RUN mvn clean package -DskipTests
 
