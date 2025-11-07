@@ -3,9 +3,10 @@ WORKDIR /workspace
 
 RUN apt-get update && apt-get install -y maven
 
+COPY ./ /workspace
 
 WORKDIR /workspace
-COPY clinica/ /workspace
+RUN ls -la
 RUN mvn -f /workspace/pom.xml clean package -DskipTests
 
 
