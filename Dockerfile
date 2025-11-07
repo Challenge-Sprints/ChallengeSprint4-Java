@@ -3,12 +3,11 @@ WORKDIR /workspace
 
 RUN apt-get update && apt-get install -y maven
 
-# Copia o código a partir do diretório do repositório (Render define como /opt/render/project/src)
-COPY ./ /workspace
 
 WORKDIR /workspace
-RUN ls -la
-RUN mvn -f pom.xml clean package -DskipTests
+COPY clinica/ /workspace
+RUN mvn -f /workspace/pom.xml clean package -DskipTests
+
 
 
 FROM eclipse-temurin:17-jre
