@@ -3,8 +3,7 @@ WORKDIR /opt/render/project
 
 RUN apt-get update && apt-get install -y maven
 
-COPY pom.xml ./
-COPY src ./src
+COPY . .
 
 
 RUN mvn -f pom.xml clean package -DskipTests
