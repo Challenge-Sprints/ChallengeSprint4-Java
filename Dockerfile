@@ -1,21 +1,16 @@
-FROM eclipse-temurin:17-jdk AS build
-WORKDIR /opt/render/project
+FROM maven:3.9.4-eclipse-temurin-17 AS build
+WORKDIR /app
 
-RUN apt-get update && apt-get install -y maven
+COPY pom.xml .
+COPY src ./src
 
-COPY . .
-
-
-RUN mvn -f pom.xml clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 
-COPY --from=build /opt/render/project/target/quarkus-app/lib/ /app/lib/
-COPY --from=build /opt/render/project/target/quarkus-app/*.jar /app/
-COPY --from=build /opt/render/project/target/quarkus-app/app/ /app/app/
-COPY --from=build /opt/render/project/target/quarkus-app/quarkus/ /app/quarkus/
+COPY --from=build /app/target/*-runner.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app/quarkus-run.jar"]
+ENTRYPOINT ["java","-jar","/app/app.jar"]
